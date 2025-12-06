@@ -61,12 +61,11 @@ textarea:focus{border-color:var(--dc-primary);box-shadow:0 0 0 3px rgba(88,101,2
   display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
   border-radius:10px; border:1px solid transparent; padding:10px 16px;
   font:700 13.5px/1 Poppins; text-decoration:none; transition:all .15s ease;
-  flex:1; /* Makes buttons same width in .actions */
+  flex:1;
 }
 .btn:active{transform:translateY(1px)}
 .btn svg{width:18px;height:18px}
 
-/* Button Colors */
 .btn-primary{background:var(--dc-primary);color:#fff;box-shadow:0 4px 12px rgba(88,101,242,.2)}
 .btn-primary:hover{background:var(--dc-primary-hover)}
 .btn-whatsapp{background:#25d366;color:#fff}
@@ -128,7 +127,7 @@ select.version-select{
 }
 @keyframes fade{from{opacity:0}to{opacity:1}}
 
-/* ===== LIGHT MODE OVERRIDES (If Toggled) ===== */
+/* ===== LIGHT MODE OVERRIDES ===== */
 html.light body{background:var(--dcL-bg);color:var(--dcL-text)}
 html.light .card{background:var(--dcL-bg-soft);border-color:var(--dcL-stroke)}
 html.light .item{background:var(--dcL-bg-soft);border-color:var(--dcL-stroke)}
@@ -204,14 +203,14 @@ Teman-teman Alumni SMA"></textarea>
   const FIXED_SLUG = "tania-bayu";
   const BASE_URL = "https://undangannya.web.id/";
   
-  // --- TEMPLATES PESAN (Salam Diperlengkap) ---
+  // --- TEMPLATES PESAN ---
   const TEMPLATES = [
     {
       key: 'tania',
       label: 'Versi Tania (The Wedding Of Tania & Bayu)',
       build: (to) => {
         const link = `${BASE_URL}${FIXED_SLUG}/?to=${encodeURIComponent(to).replace(/%20/g,'+')}`;
-        return `Assalamualaikum warohmatullahi wabarokatuh
+        return `Assalamu'alaikum Wr. Wb
 *${to}*
 
 Bismillahirrohmanirrohim.
@@ -225,7 +224,7 @@ ${link}
 
 Ungkapan syukur & terima kasih yang tulus dari kami apabila Bapak/Ibu dan teman teman berkenan hadir dalam acara pernikahan kami dan memberikan doa restu 😇
 
-Alhamdulillahi Jaza Kumullahu Khoiro,
+_Alhamdulillahi Jaza Kumullahu Khoiro,_
 Wassalamu’alaikum Warohamtullahi Wabarokatuh.
 
 Hormat kami yg berbahagia,
@@ -237,7 +236,7 @@ Tania & Bayu`;
       label: 'Versi Bayu (The Wedding Of Bayu & Tania)',
       build: (to) => {
         const link = `${BASE_URL}${FIXED_SLUG}/?to=${encodeURIComponent(to).replace(/%20/g,'+')}`;
-        return `Assalamualaikum warohmatullahi wabarokatuh
+        return `Assalamu'alaikum Wr. Wb
 *${to}*
 
 Bismillahirrohmanirrohim.
@@ -251,7 +250,7 @@ ${link}
 
 Ungkapan syukur & terima kasih yang tulus dari kami apabila Bapak/Ibu dan teman teman berkenan hadir dalam acara pernikahan kami dan memberikan doa restu 😇
 
-Alhamdulillahi Jaza Kumullahu Khoiro,
+_Alhamdulillahi Jaza Kumullahu Khoiro,_
 Wassalamu’alaikum Warohamtullahi Wabarokatuh.
 
 Hormat kami yg berbahagia,
@@ -260,16 +259,14 @@ Bayu & Tania`;
     }
   ];
 
-  // --- STATE ---
+  // --- STATE & DOM ---
   let items = [];
-
-  // --- DOM ELEMENTS ---
   const listEl = $('#list');
   const inputEl = $('#namaTamu');
   const modal = $('#modal');
   const bottomAction = $('#bottomAction');
 
-  // --- FUNCTIONS ---
+  // --- LOGIC ---
   const showModal = (title, desc) => {
     $('#modalTitle').textContent = title;
     $('#modalDesc').textContent = desc;
@@ -284,7 +281,7 @@ Bayu & Tania`;
   const render = () => {
     listEl.innerHTML = '';
     
-    // Tampilkan/Sembunyikan tombol hapus massal di bawah
+    // Toggle Tombol Hapus Massal
     if(items.length === 0){
         bottomAction.style.display = 'none';
         listEl.innerHTML = '<div style="text-align:center;color:var(--dc-muted);font-size:14px;padding:40px 20px;">Belum ada tamu.<br>Masukkan nama di atas untuk mulai.</div>';
@@ -296,11 +293,11 @@ Bayu & Tania`;
       // Container
       const el = document.createElement('div'); el.className = 'item';
       
-      // Header Item
+      // Header
       const head = document.createElement('div'); head.className = 'item-head';
       head.innerHTML = `<span class="item-name">${item.name}</span>`;
       
-      // Tombol Hapus (Icon Only)
+      // Tombol Hapus (Icon)
       const delBtn = document.createElement('button');
       delBtn.className = 'btn-icon-danger';
       delBtn.setAttribute('title', 'Hapus ' + item.name);
@@ -309,10 +306,10 @@ Bayu & Tania`;
       
       head.appendChild(delBtn);
 
-      // Body Item
+      // Body
       const body = document.createElement('div'); body.className = 'item-body';
 
-      // Control (Pilih Versi)
+      // Control (Versi)
       const ctrl = document.createElement('div'); ctrl.className = 'control-row';
       const sel = document.createElement('select'); sel.className = 'version-select';
       sel.innerHTML = TEMPLATES.map(t => `<option value="${t.key}">${t.label}</option>`).join('');
@@ -321,7 +318,7 @@ Bayu & Tania`;
       ctrl.appendChild(document.createTextNode('Versi: '));
       ctrl.appendChild(sel);
 
-      // Textarea Preview
+      // Textarea
       const area = document.createElement('textarea');
       area.className = 'msg-preview';
       
@@ -334,7 +331,7 @@ Bayu & Tania`;
       sel.addEventListener('change', updateMsg);
       updateMsg(); // init
 
-      // Action Buttons
+      // Actions
       const actions = document.createElement('div'); actions.className = 'actions';
       
       const copyBtn = document.createElement('button'); copyBtn.className = 'btn btn-primary';
@@ -355,16 +352,15 @@ Bayu & Tania`;
     });
   };
 
-  // --- LISTENERS ---
+  // --- EVENTS ---
   $('#addBtn').addEventListener('click', () => {
     const lines = inputEl.value.split('\n').map(s=>s.trim()).filter(Boolean);
     if(!lines.length) return showModal('Ups','Masukkan nama tamu terlebih dahulu.');
     
     let addedCount = 0;
     lines.forEach(name => {
-      // Cek duplikat sederhana
       if(!items.find(i => i.name.toLowerCase() === name.toLowerCase())){
-        items.push({ name: name, version: 'tania' }); // Default Tania
+        items.push({ name: name, version: 'tania' });
         addedCount++;
       }
     });
@@ -374,31 +370,20 @@ Bayu & Tania`;
     if(addedCount > 0) showModal('Sukses', `${addedCount} nama ditambahkan.`);
   });
 
-  // Tombol Hapus Massal (Bawah)
   $('#clearAllBtn').addEventListener('click', () => {
     if(confirm('Yakin ingin menghapus SEMUA daftar tamu?')){
-      items = []; 
-      render();
+      items = []; render();
     }
   });
 
-  // Dark Mode Toggle Logic
+  // Dark Mode Toggle
   const root = document.documentElement;
   const tBtn = $('#themeToggle');
-  
-  // Apply theme (default is dark in CSS, adding 'light' class switches it)
   const applyTheme = (isDark) => {
-    if(isDark){
-      root.classList.remove('light');
-      tBtn.innerHTML = '🌙';
-    } else {
-      root.classList.add('light');
-      tBtn.innerHTML = '🌞';
-    }
+    if(isDark){ root.classList.remove('light'); tBtn.innerHTML = '🌙'; }
+    else { root.classList.add('light'); tBtn.innerHTML = '🌞'; }
   };
-
-  // Default: Dark Mode
-  applyTheme(true);
+  applyTheme(true); // Default Dark
 
   tBtn.onclick = () => {
     const isCurrentlyDark = !root.classList.contains('light');
