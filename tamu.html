@@ -2,9 +2,12 @@
 <html lang="id" data-dc>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
 <title>Kirim Undangan - Tania & Bayu</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 /* ================= THEME SETUP ================= */
 :root{
@@ -16,47 +19,76 @@
   --dcL-text:#060607; --dcL-muted:#6b7280; --dcL-stroke:#e5e7eb;
 }
 *{box-sizing:border-box}
-html[data-dc] body{ margin:0; background:var(--dc-bg); color:var(--dc-text); font-family:Poppins,sans-serif; }
+html, body { overflow-x: hidden; } 
+html[data-dc] body{ 
+  margin:0; background:var(--dc-bg); color:var(--dc-text); 
+  /* FONT DIGANTI INTER */
+  font-family: 'Inter', sans-serif; 
+  -webkit-font-smoothing: antialiased;
+}
 .wrap{max-width:800px;margin:0 auto;padding:20px 14px 100px}
 
 /* ===== Header ===== */
 .header{display:flex;flex-direction:column;gap:8px;margin:30px 0 24px;text-align:center}
-.header h1{margin:0;font:800 24px/1.2 Poppins;letter-spacing:-0.5px}
-.header p{margin:0;color:var(--dc-muted);font-weight:500;font-size:14px}
+.header h1{margin:0;font-weight:800;font-size:22px;line-height:1.2;letter-spacing:-0.5px}
+.header p{margin:0;color:var(--dc-muted);font-weight:500;font-size:14px; padding:0 10px;}
 .badge-slug{ display:inline-block; background:#3b3f86; color:#cfd3ff; padding:4px 12px; border-radius:50px; font-weight:700; font-size:12px; margin-top:8px;}
 
 /* ===== Card & Inputs ===== */
 .card{ background:var(--dc-bg-soft); border:1px solid var(--dc-stroke); border-radius:16px; padding:20px; box-shadow:0 12px 28px rgba(0,0,0,.04)}
-.section-title{margin:0 0 16px;font:800 16px/1.2 Poppins; display:flex; align-items:center; gap:8px; color:var(--dc-text)}
+.section-title{margin:0 0 16px;font-weight:700;font-size:16px;display:flex; align-items:center; justify-content:space-between; color:var(--dc-text)}
 
-/* Dynamic Input Rows */
-.input-container { display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
-.input-row { display:flex; gap:8px; align-items:center; animation: fadeIn 0.2s ease; }
+/* --- Dynamic Input Rows (Responsive Layout) --- */
+.input-container { display:flex; flex-direction:column; gap:12px; margin-bottom:20px; }
+.input-row { 
+  display:flex; flex-wrap:wrap; gap:8px; align-items:center; 
+  background:var(--dc-surface); padding:10px; border-radius:12px; border:1px solid var(--dc-stroke);
+  animation: fadeIn 0.2s ease; 
+}
 @keyframes fadeIn { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:translateY(0)} }
 
+/* Styling Input */
 .inp-text, .inp-select {
-  padding:10px 12px; border:1px solid var(--dc-stroke); border-radius:10px;
-  background:var(--dc-surface); color:var(--dc-text); font:400 13px Poppins; outline:0;
-  transition:border-color .15s;
+  padding:10px 12px; border:1px solid var(--dc-stroke); border-radius:8px;
+  background:var(--dc-bg-soft); color:var(--dc-text); 
+  font-family: 'Inter', sans-serif; font-size:14px; /* Font size sedikit dinaikkan agar jelas */
+  outline:0; transition:border-color .15s; height: 42px;
 }
 .inp-text:focus, .inp-select:focus { border-color:var(--dc-primary); }
-.inp-name { flex:2; } /* Nama lebih lebar */
-.inp-select { width:85px; flex:none; }
-.inp-contact { flex:3; } /* Kontak paling lebar */
 
+/* --- Layout Logic for Inputs --- */
+/* Default (Desktop/Tablet) */
+.inp-name { flex: 2; min-width: 150px; }
+.inp-select { flex: 0 0 85px; }
+.inp-contact { flex: 3; min-width: 150px; }
 .btn-icon-danger {
-  background:transparent; color:var(--dc-muted); border:1px solid var(--dc-stroke);
-  padding:0; border-radius:10px; width:42px; height:42px; flex:none;
+  background:var(--dc-bg-soft); color:var(--dc-muted); border:1px solid var(--dc-stroke);
+  padding:0; border-radius:8px; width:42px; height:42px; flex:none;
   display:flex; align-items:center; justify-content:center; cursor:pointer;
 }
 .btn-icon-danger:hover { background:rgba(239, 68, 68, 0.1); color:var(--dc-danger); border-color:var(--dc-danger); }
+
+/* Mobile Breakpoint (Make it 2 Lines) */
+@media (max-width: 600px) {
+  .card { padding: 15px; }
+  .input-row { padding: 8px; gap: 8px; }
+  
+  /* Baris 1: Nama (Full) + Hapus (Ujung) */
+  .inp-name { flex: 1 1 calc(100% - 50px); order: 1; }
+  .btn-icon-danger { flex: 0 0 42px; order: 2; }
+  
+  /* Baris 2: Select (Kecil) + Kontak (Sisa) */
+  .inp-select { flex: 0 0 85px; order: 3; }
+  .inp-contact { flex: 1 1 calc(100% - 93px); order: 4; }
+}
 
 /* ===== Main Actions ===== */
 .actions{display:flex;gap:10px;margin-top:12px}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
-  border-radius:10px; border:1px solid transparent; padding:10px 16px;
-  font:700 13.5px/1 Poppins; text-decoration:none; transition:all .15s ease; flex:1;
+  border-radius:10px; border:1px solid transparent; padding:12px 16px;
+  font-family: 'Inter', sans-serif; font-weight:600; font-size:14px;
+  text-decoration:none; transition:all .15s ease; flex:1;
 }
 .btn:active{transform:translateY(1px)}
 .btn svg{width:18px;height:18px}
@@ -77,16 +109,16 @@ html[data-dc] body{ margin:0; background:var(--dc-bg); color:var(--dc-text); fon
 .list{margin-top:24px;display:grid;gap:16px}
 .item{ border:1px solid var(--dc-stroke); border-radius:14px; overflow:hidden; background:var(--dc-bg-soft);}
 .item-head{ display:flex; justify-content:space-between; align-items:center; padding:10px 16px; background:#232428; border-bottom:1px solid var(--dc-stroke);}
-.item-name{font:700 15px Poppins;color:var(--dc-text); display:flex; align-items:center; gap:8px;}
-.badge-contact { font-size:10px; padding:2px 6px; border-radius:4px; font-weight:600; text-transform:uppercase;}
+.item-name{font-weight:700; font-size:15px; color:var(--dc-text); display:flex; align-items:center; gap:8px;}
+.badge-contact { font-size:11px; padding:2px 6px; border-radius:4px; font-weight:700; text-transform:uppercase;}
 .bg-wa { background:rgba(37, 211, 102, 0.2); color:#25d366; }
 .bg-ig { background:rgba(225, 48, 108, 0.2); color:#E1306C; }
 
 .item-body{padding:16px}
 .control-row{display:flex; align-items:center; gap:10px; margin-bottom:12px}
-.control-row label{font-size:12px; font-weight:600; color:var(--dc-muted); white-space:nowrap}
-select.version-select{ width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--dc-stroke); background:var(--dc-surface); font-family:Poppins; font-size:13px; color:var(--dc-text);}
-.msg-preview{ width:100%; min-height:100px; font-size:13px; padding:10px; margin-bottom:10px; background:var(--dc-surface); border-radius:8px; border:1px solid var(--dc-stroke); color:var(--dc-muted); outline:none;}
+.control-row label{font-size:13px; font-weight:600; color:var(--dc-muted); white-space:nowrap}
+select.version-select{ width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--dc-stroke); background:var(--dc-surface); font-family:'Inter', sans-serif; font-size:13px; color:var(--dc-text);}
+.msg-preview{ width:100%; min-height:100px; font-size:13px; font-family:'Inter', sans-serif; padding:10px; margin-bottom:10px; background:var(--dc-surface); border-radius:8px; border:1px solid var(--dc-stroke); color:var(--dc-muted); outline:none; line-height: 1.5;}
 .msg-preview:focus { border-color:var(--dc-primary); }
 
 /* ===== Toast/Modal ===== */
@@ -103,6 +135,8 @@ html.light .item-name{color:var(--dcL-text)}
 html.light .inp-text, html.light .inp-select, html.light textarea, html.light select, html.light .msg-preview{ background:var(--dcL-surface); color:var(--dcL-text); border-color:var(--dcL-stroke);}
 html.light .header p, html.light .control-row label{color:var(--dcL-muted)}
 html.light .badge-slug{background:#eef2ff;color:#4450db}
+html.light .input-row { background:var(--dcL-bg); border-color:var(--dcL-stroke); }
+html.light .btn-icon-danger { background:var(--dcL-surface); border-color:var(--dcL-stroke); }
 html.light .modal-card{background:#fff;color:#000;border-color:#e5e7eb}
 
 /* Theme Switcher */
@@ -125,7 +159,7 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
   <section class="card">
     <div class="section-title">
         <span>📝 Data Tamu</span>
-        <button id="addOneBtn" class="btn btn-outline" style="font-size:11px; padding:4px 10px; width:auto; flex:none; margin-left:auto;">+ Tambah Baris</button>
+        <button id="addOneBtn" class="btn btn-outline" style="font-size:11px; padding:6px 12px; width:auto; flex:none;">+ Tambah</button>
     </div>
     
     <div id="inputContainer" class="input-container">
@@ -134,7 +168,7 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
     <div class="actions">
       <button id="processBtn" class="btn btn-primary">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        Generate Daftar Undangan
+        Generate Undangan
       </button>
     </div>
   </section>
@@ -151,7 +185,7 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
 
 <div id="modal" class="modal">
   <div class="modal-card">
-    <h3 id="modalTitle" style="margin:0 0 8px;font-family:Poppins">Info</h3>
+    <h3 id="modalTitle" style="margin:0 0 8px">Info</h3>
     <p id="modalDesc" style="margin:0 0 16px;font-size:14px;opacity:0.8">Pesan</p>
     <button onclick="document.getElementById('modal').classList.remove('show')" class="btn btn-primary" style="width:100%">OK</button>
   </div>
@@ -186,7 +220,7 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
   ];
 
   // --- STATE ---
-  let items = []; // { id, name, type, contact, version }
+  let items = [];
   const listEl = $('#list');
   const container = $('#inputContainer');
   const modal = $('#modal');
@@ -204,7 +238,6 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
     catch { return false; }
   };
 
-  // Format phone number to 628xxx
   const cleanPhone = (p) => {
     let n = p.replace(/\D/g,'');
     if(n.startsWith('0')) return '62' + n.substring(1);
@@ -212,7 +245,6 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
     return n;
   };
   
-  // Clean IG username
   const cleanIG = (u) => u.replace('@','').trim();
 
   // --- INPUT ROW LOGIC ---
@@ -220,15 +252,15 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
     const div = document.createElement('div');
     div.className = 'input-row';
     div.innerHTML = `
-      <input type="text" class="inp-text inp-name" placeholder="Nama Tamu (mis: Budi)" required>
+      <input type="text" class="inp-text inp-name" placeholder="Nama Tamu" required>
+      <button class="btn-icon-danger" title="Hapus Baris">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
       <select class="inp-select inp-type">
         <option value="wa">WA</option>
         <option value="ig">IG</option>
       </select>
-      <input type="text" class="inp-text inp-contact" placeholder="08xx / Username">
-      <button class="btn-icon-danger" title="Hapus Baris">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
+      <input type="text" class="inp-text inp-contact" placeholder="No. WA (08xx)">
     `;
     
     // Remove handler
@@ -238,7 +270,7 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
     const sel = div.querySelector('.inp-type');
     const inpC = div.querySelector('.inp-contact');
     sel.onchange = () => {
-        inpC.placeholder = sel.value === 'wa' ? '08xx (Nomor WA)' : 'Username IG';
+        inpC.placeholder = sel.value === 'wa' ? 'No. WA (08xx)' : 'Username IG';
     };
 
     container.appendChild(div);
@@ -296,21 +328,18 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
       // Actions Buttons
       const actions = document.createElement('div'); actions.className = 'actions';
 
-      // 1. Copy Button (Always there)
+      // Copy Button
       const copyBtn = document.createElement('button'); copyBtn.className = 'btn btn-copy';
       copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-      copyBtn.title = "Copy Text Only";
-      copyBtn.style.flex = "0 0 auto"; // Make it small icon only
+      copyBtn.style.flex = "0 0 auto"; 
       copyBtn.onclick = async () => {
         const ok = await copyText(area.value);
         showModal(ok ? 'Disalin' : 'Gagal', ok ? 'Pesan disalin.' : 'Izin clipboard ditolak.');
       };
 
-      // 2. Main Send Button (Dynamic)
+      // Send Button
       const sendBtn = document.createElement('button'); 
-      
       if(item.type === 'wa') {
-          // WHATSAPP LOGIC
           sendBtn.className = 'btn btn-whatsapp';
           sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Kirim WA';
           sendBtn.onclick = () => {
@@ -319,14 +348,11 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
              window.open(`https://wa.me/${phone}?text=${encodeURIComponent(area.value)}`, '_blank');
           };
       } else {
-          // INSTAGRAM LOGIC
           sendBtn.className = 'btn btn-instagram';
           sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> Copy & Buka IG';
           sendBtn.onclick = async () => {
              if(!item.contact) return showModal('Error', 'Username IG kosong.');
-             // 1. Copy
              await copyText(area.value);
-             // 2. Open IG
              window.open(`https://instagram.com/${cleanIG(item.contact)}`, '_blank');
           };
       }
@@ -358,8 +384,8 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
     });
 
     if(newItemsCount > 0){
-        container.innerHTML = ''; // Clear inputs after process
-        createInputRow(); // Add one fresh row
+        container.innerHTML = '';
+        createInputRow();
         render();
     } else {
         showModal('Ups', 'Pastikan nama tamu sudah diisi.');
@@ -370,7 +396,7 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
     if(confirm('Yakin hapus semua hasil generate?')){ items = []; render(); }
   });
 
-  // Init
+  // Init Theme
   const root = document.documentElement;
   const tBtn = $('#themeToggle');
   const applyTheme = (isDark) => {
@@ -380,7 +406,6 @@ html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
   applyTheme(true);
   tBtn.onclick = () => applyTheme(!root.classList.contains('light'));
   
-  // Start with 1 row
   createInputRow();
   render();
 
